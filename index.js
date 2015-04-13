@@ -167,6 +167,11 @@ module.exports = function (session) {
     ttl = ttl || (typeof maxAge === 'number' ? maxAge / 1000 : oneDay);
     ttl = Math.ceil(ttl + Date.now() / 1000);
 
+    // the version of pg we're using (2.11) won't stringify objects, so we
+    // have to do it manually. Note that if we upgrade pg this may break,
+    // so switch to mainline (non-fork/original) if/when we upgrade pg.
+    sess = JSON.stringify(sess); 
+
     this.query('UPDATE ' + this.quotedTable() + ' SET sess = $1, expire = to_timestamp($2) WHERE sid = $3 RETURNING sid', [sess, ttl, sid], function (err, data) {
       if (!err && data === false) {
         self.query('INSERT INTO ' + self.quotedTable() + ' (sess, expire, sid) SELECT $1, to_timestamp($2), $3 WHERE NOT EXISTS (SELECT 1 FROM ' + self.quotedTable() + ' WHERE sid = $4)', [sess, ttl, sid, sid], function (err) {
