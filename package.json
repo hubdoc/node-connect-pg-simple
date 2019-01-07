@@ -1,5 +1,5 @@
 {
-  "name": "connect-pg-simple",
+  "name": "@hubdoc/connect-pg-simple",
   "version": "3.0.1",
   "description": "A simple, minimal PostgreSQL session store for Connect/Express",
   "url": "http://github.com/voxpelli/node-connect-pg-simple",
@@ -35,5 +35,8 @@
     "mocha": "^2.1.0",
     "promise": "^6.1.0",
     "sinon": "^1.13.0"
+  },
+  "publishConfig": {
+    "registry": "https://hubdoc.jfrog.io/hubdoc/api/npm/npm-local/"
   }
 }
